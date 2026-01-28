@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36915.13 d17.14
+VisualStudioVersion = 17.14.36915.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.Domain", "EgyptVoyage.Domain\EgyptVoyage.Domain.csproj", "{FE27C58D-2046-4B0F-A05E-F522820EA4F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.Application", "EgyptVoyage.Application\EgyptVoyage.Application.csproj", "{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FE27C58D-2046-4B0F-A05E-F522820EA4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE27C58D-2046-4B0F-A05E-F522820EA4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE27C58D-2046-4B0F-A05E-F522820EA4F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
