@@ -1,0 +1,109 @@
+﻿using EgyptVoyage.Application.Common.Interfaces;
+using EgyptVoyage.Application.DTOs.Auth;
+using EgyptVoyage.Domain.Entities;
+using EgyptVoyage.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EgyptVoyage.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly ITouristRepository _touristRepository;
+    private readonly IClerkRepository _clerkRepository;
+    private readonly JwtTokenGenerator _jwtTokenGenerator;
+    private readonly PasswordHasher _passwordHasher;
+
+    public AuthController(
+        ITouristRepository touristRepository,
+        IClerkRepository clerkRepository,
+        JwtTokenGenerator jwtTokenGenerator,
+        PasswordHasher passwordHasher)
+    {
+        _touristRepository = touristRepository;
+        _clerkRepository = clerkRepository;
+        _jwtTokenGenerator = jwtTokenGenerator;
+        _passwordHasher = passwordHasher;
+    }
+
+    [HttpPost("register")]
+    public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterDto request)
+    {
+        try
+        {
+            var existingTourist = await _touristRepository.GetByEmailAsync(request.Email);
+            if (existingTourist != null)
+            {
+                return BadRequest(new { message = "Email already exists" });
+            }
+
+            var hashedPassword = _passwordHasher.HashPassword(request.Password);
+
+            var tourist = new Tourist
+            {
+                Name = request.Name,
+                Email = request.Email,
+                Password = hashedPassword
+            };
+
+            await _touristRepository.AddAsync(tourist);
+
+            var token = _jwtTokenGenerator.GenerateTokenForTourist(tourist);
+
+            return Ok(new AuthResponseDto
+            {
+                Token = token,
+                Id = tourist.Id,
+                Email = tourist.Email,
+                Name = tourist.Name,
+                Role = "Tourist"
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred during registration", error = ex.Message });
+        }
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto request)
+    {
+        try
+        {
+            var tourist = await _touristRepository.GetByEmailAsync(request.Email);
+            if (tourist != null && _passwordHasher.VerifyPassword(request.Password, tourist.Password))
+            {
+                var token = _jwtTokenGenerator.GenerateTokenForTourist(tourist);
+                return Ok(new AuthResponseDto
+                {
+                    Token = token,
+                    Id = tourist.Id,
+                    Email = tourist.Email,
+                    Name = tourist.Name,
+                    Role = "Tourist"
+                });
+            }
+
+            var clerk = await _clerkRepository.GetByEmailAsync(request.Email);
+            if (clerk != null && _passwordHasher.VerifyPassword(request.Password, clerk.Password))
+            {
+                var token = _jwtTokenGenerator.GenerateTokenForClerk(clerk);
+                return Ok(new AuthResponseDto
+                {
+                    Token = token,
+                    Id = clerk.Id,
+                    Email = clerk.Email,
+                    Name = clerk.Name,
+                    Role = clerk.Role.ToString()
+                });
+            }
+
+            return Unauthorized(new { message = "Invalid email or password" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred during login", error = ex.Message });
+        }
+    }
+}

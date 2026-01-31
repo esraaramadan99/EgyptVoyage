@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.Domain", "Egypt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.Application", "EgyptVoyage.Application\EgyptVoyage.Application.csproj", "{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.Infrastructure", "EgyptVoyage.Infrastructure\EgyptVoyage.Infrastructure.csproj", "{6063E7D3-BEEC-4FF3-ADC5-9A913F2C3898}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgyptVoyage.API", "EgyptVoyage.API\EgyptVoyage.API.csproj", "{068FDB66-B2E7-49F6-B79B-18EF35BE310C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5610AC6D-C831-4D59-81BC-1C5D8D270C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6063E7D3-BEEC-4FF3-ADC5-9A913F2C3898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6063E7D3-BEEC-4FF3-ADC5-9A913F2C3898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6063E7D3-BEEC-4FF3-ADC5-9A913F2C3898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6063E7D3-BEEC-4FF3-ADC5-9A913F2C3898}.Release|Any CPU.Build.0 = Release|Any CPU
+		{068FDB66-B2E7-49F6-B79B-18EF35BE310C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068FDB66-B2E7-49F6-B79B-18EF35BE310C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068FDB66-B2E7-49F6-B79B-18EF35BE310C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068FDB66-B2E7-49F6-B79B-18EF35BE310C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
