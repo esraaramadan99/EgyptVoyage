@@ -1,6 +1,7 @@
 ﻿using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Auth;
 using EgyptVoyage.Domain.Entities;
+using EgyptVoyage.Domain.Enums;
 using EgyptVoyage.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -106,4 +107,54 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = "An error occurred during login", error = ex.Message });
         }
     }
+    /// <summary>
+    /// Register Clerk - للاختبار فقط
+    /// </summary>
+    [HttpPost("register-clerk")]
+    public async Task<ActionResult<AuthResponseDto>> RegisterClerk([FromBody] RegisterDto request)
+    {
+        try
+        {
+            var existingClerk = await _clerkRepository.GetByEmailAsync(request.Email);
+            if (existingClerk != null)
+            {
+                return BadRequest(new { message = "Email already exists" });
+            }
+
+            var hashedPassword = _passwordHasher.HashPassword(request.Password);
+
+            var clerk = new Clerk
+            {
+                Name = request.Name,
+                Email = request.Email,
+                Password = hashedPassword,
+                Role = UserRole.Clerk
+            };
+
+            await _clerkRepository.AddAsync(clerk);
+
+            var token = _jwtTokenGenerator.GenerateTokenForClerk(clerk);
+
+            return Ok(new AuthResponseDto
+            {
+                Token = token,
+                Id = clerk.Id,
+                Email = clerk.Email,
+                Name = clerk.Name,
+                Role = clerk.Role.ToString()
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred", error = ex.Message });
+        }
+    }
+
+
+
+
+
+
+
+
 }

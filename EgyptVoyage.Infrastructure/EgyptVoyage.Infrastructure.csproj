@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EgyptVoyage.Application\EgyptVoyage.Application.csproj" />
     <ProjectReference Include="..\EgyptVoyage.Domain\EgyptVoyage.Domain.csproj" />
   </ItemGroup>
