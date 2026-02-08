@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿/*using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Favorite;
 using EgyptVoyage.Domain.Entities;
@@ -92,3 +92,4 @@ public class FavoriteListsController : ControllerBase
         }
     }
 }
+*/

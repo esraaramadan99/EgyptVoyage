@@ -1,3 +1,4 @@
+using EgyptVoyage.Application;
 using EgyptVoyage.Infrastructure;
 using EgyptVoyage.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -24,12 +25,22 @@ builder.Services.AddCors(options =>
 
 // Configure JWT Settings
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-
+/*
 // Add AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // Add Infrastructure (MongoDB, Repositories, Authentication)
+builder.Services.AddInfrastructure(builder.Configuration); */
+
+
+// Add Application Services (AutoMapper, FluentValidation)
+builder.Services.AddApplication();
+
+// Add Infrastructure (MongoDB, Repositories, Authentication)
 builder.Services.AddInfrastructure(builder.Configuration);
+
+
+
 
 // Configure JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();

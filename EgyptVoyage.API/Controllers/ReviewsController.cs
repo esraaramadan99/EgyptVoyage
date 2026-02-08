@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿
+/*
+using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Review;
 using EgyptVoyage.Domain.Entities;
@@ -79,7 +81,8 @@ public class ReviewsController : ControllerBase
             return StatusCode(500, new { message = "Error retrieving reviews", error = ex.Message });
         }
     }
-
+*/
+    /*
     [HttpPost]
     [Authorize(Roles = "Tourist")]
     public async Task<ActionResult<ReviewDto>> Create([FromBody] CreateReviewDto createDto)
@@ -97,6 +100,38 @@ public class ReviewsController : ControllerBase
             return StatusCode(500, new { message = "Error creating review", error = ex.Message });
         }
     }
+    */
+    /*
+    [HttpPost]
+    [Authorize(Roles = "Tourist")]
+    public async Task<ActionResult<ReviewDto>> Create([FromBody] CreateReviewDto createDto)
+    {
+        try
+        {
+            // Get TouristId from JWT token claims
+            var touristId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                         ?? User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(touristId))
+            {
+                return Unauthorized(new { message = "Unable to identify user" });
+            }
+
+            var review = _mapper.Map<Review>(createDto);
+            review.TouristId = touristId;  // ✅ تعيين TouristId
+
+            var createdReview = await _reviewRepository.AddAsync(review);
+            var reviewDto = _mapper.Map<ReviewDto>(createdReview);
+
+            return CreatedAtAction(nameof(GetById), new { id = createdReview.Id }, reviewDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error creating review", error = ex.Message });
+        }
+    }
+
+
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Tourist")]
@@ -116,3 +151,4 @@ public class ReviewsController : ControllerBase
         }
     }
 }
+*/

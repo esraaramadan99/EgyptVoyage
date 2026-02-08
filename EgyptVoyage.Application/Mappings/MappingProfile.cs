@@ -1,79 +1,4 @@
-﻿/*
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-using AutoMapper;
-using EgyptVoyage.Application.DTOs;
-using EgyptVoyage.Application.DTOs.Auth;
-using EgyptVoyage.Application.DTOs.Hotel;
-using EgyptVoyage.Application.DTOs.Restaurant;
-using EgyptVoyage.Application.DTOs.Landmark;
-using EgyptVoyage.Application.DTOs.Program;
-using EgyptVoyage.Application.DTOs.Review;
-using EgyptVoyage.Application.DTOs.Favorite;
-using EgyptVoyage.Domain.Entities;
-using EgyptVoyage.Domain.ValueObjects;
-
-namespace EgyptVoyage.Application.Mappings;
-
-public class MappingProfile : Profile
-{
-    public MappingProfile()
-    {
-        // Location mappings
-        CreateMap<Location, LocationDto>().ReverseMap();
-
-        // Auth mappings
-        CreateMap<RegisterDto, Tourist>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-
-        // Hotel mappings
-        CreateMap<Hotel, HotelDto>();
-        CreateMap<CreateHotelDto, Hotel>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateHotelDto, Hotel>();
-
-        // Restaurant mappings
-        CreateMap<Restaurant, RestaurantDto>();
-        CreateMap<CreateRestaurantDto, Restaurant>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateRestaurantDto, Restaurant>();
-
-        // Landmark mappings
-        CreateMap<Landmark, LandmarkDto>();
-        CreateMap<CreateLandmarkDto, Landmark>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateLandmarkDto, Landmark>();
-        // Program mappings
-        CreateMap<Domain.Entities.Program, ProgramDto>();
-        CreateMap<CreateProgramDto, Domain.Entities.Program>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateProgramDto, Domain.Entities.Program>();
-
-        // Review mappings
-        CreateMap<Review, ReviewDto>();
-        CreateMap<CreateReviewDto, Review>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.TouristId, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-
-        // FavoriteList mappings
-        CreateMap<FavoriteList, FavoriteDto>();
-    }
-}
-*/
-
-
-using AutoMapper;
+﻿using AutoMapper;
 using EgyptVoyage.Application.DTOs;
 using EgyptVoyage.Application.DTOs.Auth;
 using EgyptVoyage.Application.DTOs.Hotel;
@@ -88,56 +13,281 @@ using EgyptVoyage.Domain.Enums;
 
 namespace EgyptVoyage.Application.Common.Mappings;
 
+/// <summary>
+/// AutoMapper profile with all entity-DTO mappings
+/// </summary>
 public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // Location mappings
+        // ============================================
+        // Location Mappings
+        // ============================================
         CreateMap<Location, LocationDto>().ReverseMap();
 
-        // Auth mappings
+        // ============================================
+        // Auth Mappings
+        // ============================================
         CreateMap<RegisterDto, Tourist>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
-        // Hotel mappings
-        CreateMap<Hotel, HotelDto>();
+        // ============================================
+        // Hotel Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
+        CreateMap<Hotel, HotelDto>()
+            .ForMember(dest => dest.Level, opt => opt.MapFrom(src => (int)src.Level));
+
+        // DTO -> Entity (Create)
         CreateMap<CreateHotelDto, Hotel>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.Level, opt => opt.MapFrom(src => (HotelLevel)src.Level));
-        CreateMap<UpdateHotelDto, Hotel>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
             .ForMember(dest => dest.Level, opt => opt.MapFrom(src => (HotelLevel)src.Level));
 
-        // Restaurant mappings
-        CreateMap<Restaurant, RestaurantDto>();
+        // DTO -> Entity (Update)
+        CreateMap<UpdateHotelDto, Hotel>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.Level, opt => opt.MapFrom(src => (HotelLevel)src.Level));
+
+        // ============================================
+        // Restaurant Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
+        CreateMap<Restaurant, RestaurantDto>()
+            .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom<RestaurantOpeningHourResolver>())
+            .ForMember(dest => dest.CloseHour, opt => opt.MapFrom<RestaurantCloseHourResolver>())
+            .ForMember(dest => dest.CuisineType, opt => opt.MapFrom(src => src.CuisineType.ToString()));
+
+        // DTO -> Entity (Create)
         CreateMap<CreateRestaurantDto, Restaurant>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateRestaurantDto, Restaurant>();
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.Rating, opt => opt.Ignore())
+            .ForMember(dest => dest.OperatingHours, opt => opt.MapFrom<CreateRestaurantOperatingHoursResolver>())
+            .ForMember(dest => dest.CuisineType, opt => opt.MapFrom<CuisineTypeResolver>());
 
-        // Landmark mappings
-        CreateMap<Landmark, LandmarkDto>();
+        // DTO -> Entity (Update)
+        CreateMap<UpdateRestaurantDto, Restaurant>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.Rating, opt => opt.Ignore())
+            .ForMember(dest => dest.OperatingHours, opt => opt.MapFrom<UpdateRestaurantOperatingHoursResolver>())
+            .ForMember(dest => dest.CuisineType, opt => opt.MapFrom<CuisineTypeResolver>());
+
+        // ============================================
+        // Landmark Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
+        CreateMap<Landmark, LandmarkDto>()
+            .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom<LandmarkOpeningHourResolver>())
+            .ForMember(dest => dest.CloseHour, opt => opt.MapFrom<LandmarkCloseHourResolver>());
+
+        // DTO -> Entity (Create)
         CreateMap<CreateLandmarkDto, Landmark>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateLandmarkDto, Landmark>();
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.Type, opt => opt.Ignore())
+            .ForMember(dest => dest.OperatingHours, opt => opt.MapFrom<CreateLandmarkOperatingHoursResolver>());
 
-        // Program mappings
+        // DTO -> Entity (Update)
+        CreateMap<UpdateLandmarkDto, Landmark>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.Type, opt => opt.Ignore())
+            .ForMember(dest => dest.OperatingHours, opt => opt.MapFrom<UpdateLandmarkOperatingHoursResolver>());
+
+        // ============================================
+        // Program Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
         CreateMap<Domain.Entities.Program, ProgramDto>();
+
+        // DTO -> Entity (Create)
         CreateMap<CreateProgramDto, Domain.Entities.Program>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
-        CreateMap<UpdateProgramDto, Domain.Entities.Program>();
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
 
-        // Review mappings
-        CreateMap<Review, ReviewDto>();
+        // DTO -> Entity (Update)
+        CreateMap<UpdateProgramDto, Domain.Entities.Program>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+
+        // ============================================
+        // Review Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
+        CreateMap<Review, ReviewDto>()
+            .ForMember(dest => dest.EntityType, opt => opt.MapFrom(src => src.EntityType.ToString()));
+
+        // DTO -> Entity (Create)
         CreateMap<CreateReviewDto, Review>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.TouristId, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
+            .ForMember(dest => dest.EntityType, opt => opt.MapFrom<EntityTypeResolver>());
 
-        // FavoriteList mappings
+        // ============================================
+        // FavoriteList Mappings
+        // ============================================
+
+        // Entity -> DTO (Read)
         CreateMap<FavoriteList, FavoriteDto>();
+
+        // DTO -> Entity (Update)
+        CreateMap<FavoriteDto, FavoriteList>()
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+    }
+
+    // ============================================
+    // Value Resolvers
+    // ============================================
+
+    // Restaurant Resolvers
+    public class RestaurantOpeningHourResolver : IValueResolver<Restaurant, RestaurantDto, string>
+    {
+        public string Resolve(Restaurant source, RestaurantDto destination, string destMember, ResolutionContext context)
+        {
+            return source.OperatingHours?.OpeningTime.ToString(@"hh\:mm") ?? string.Empty;
+        }
+    }
+
+    public class RestaurantCloseHourResolver : IValueResolver<Restaurant, RestaurantDto, string>
+    {
+        public string Resolve(Restaurant source, RestaurantDto destination, string destMember, ResolutionContext context)
+        {
+            return source.OperatingHours?.ClosingTime.ToString(@"hh\:mm") ?? string.Empty;
+        }
+    }
+
+    public class CreateRestaurantOperatingHoursResolver : IValueResolver<CreateRestaurantDto, Restaurant, OperatingHours?>
+    {
+        public OperatingHours? Resolve(CreateRestaurantDto source, Restaurant destination, OperatingHours? destMember, ResolutionContext context)
+        {
+            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+        }
+    }
+
+    public class UpdateRestaurantOperatingHoursResolver : IValueResolver<UpdateRestaurantDto, Restaurant, OperatingHours?>
+    {
+        public OperatingHours? Resolve(UpdateRestaurantDto source, Restaurant destination, OperatingHours? destMember, ResolutionContext context)
+        {
+            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+        }
+    }
+
+    public class CuisineTypeResolver : IValueResolver<CreateRestaurantDto, Restaurant, CuisineType>,
+                                       IValueResolver<UpdateRestaurantDto, Restaurant, CuisineType>
+    {
+        public CuisineType Resolve(CreateRestaurantDto source, Restaurant destination, CuisineType destMember, ResolutionContext context)
+        {
+            return ParseCuisineType(source.CuisineType);
+        }
+
+        public CuisineType Resolve(UpdateRestaurantDto source, Restaurant destination, CuisineType destMember, ResolutionContext context)
+        {
+            return ParseCuisineType(source.CuisineType);
+        }
+    }
+
+    // Landmark Resolvers
+    public class LandmarkOpeningHourResolver : IValueResolver<Landmark, LandmarkDto, string>
+    {
+        public string Resolve(Landmark source, LandmarkDto destination, string destMember, ResolutionContext context)
+        {
+            return source.OperatingHours?.OpeningTime.ToString(@"hh\:mm") ?? string.Empty;
+        }
+    }
+
+    public class LandmarkCloseHourResolver : IValueResolver<Landmark, LandmarkDto, string>
+    {
+        public string Resolve(Landmark source, LandmarkDto destination, string destMember, ResolutionContext context)
+        {
+            return source.OperatingHours?.ClosingTime.ToString(@"hh\:mm") ?? string.Empty;
+        }
+    }
+
+    public class CreateLandmarkOperatingHoursResolver : IValueResolver<CreateLandmarkDto, Landmark, OperatingHours?>
+    {
+        public OperatingHours? Resolve(CreateLandmarkDto source, Landmark destination, OperatingHours? destMember, ResolutionContext context)
+        {
+            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+        }
+    }
+
+    public class UpdateLandmarkOperatingHoursResolver : IValueResolver<UpdateLandmarkDto, Landmark, OperatingHours?>
+    {
+        public OperatingHours? Resolve(UpdateLandmarkDto source, Landmark destination, OperatingHours? destMember, ResolutionContext context)
+        {
+            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+        }
+    }
+
+    // Review Resolver
+    public class EntityTypeResolver : IValueResolver<CreateReviewDto, Review, FavoriteType>
+    {
+        public FavoriteType Resolve(CreateReviewDto source, Review destination, FavoriteType destMember, ResolutionContext context)
+        {
+            return ParseFavoriteType(source.EntityType);
+        }
+    }
+
+    // ============================================
+    // Helper Methods
+    // ============================================
+
+    private static OperatingHours? MapOperatingHours(string openingHour, string closeHour)
+    {
+        if (string.IsNullOrWhiteSpace(openingHour) || string.IsNullOrWhiteSpace(closeHour))
+            return null;
+
+        try
+        {
+            var opening = TimeSpan.Parse(openingHour);
+            var closing = TimeSpan.Parse(closeHour);
+            return new OperatingHours(opening, closing);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static CuisineType ParseCuisineType(string cuisineType)
+    {
+        if (Enum.TryParse<CuisineType>(cuisineType, true, out var result))
+            return result;
+        return CuisineType.Other;
+    }
+
+    private static FavoriteType ParseFavoriteType(string entityType)
+    {
+        if (Enum.TryParse<FavoriteType>(entityType, true, out var result))
+            return result;
+        return FavoriteType.Hotel;
     }
 }

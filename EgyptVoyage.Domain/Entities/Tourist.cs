@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 namespace EgyptVoyage.Domain.Entities;
 
 
-/// <summary>
-/// Tourist entity
-/// </summary>
+
 public class Tourist : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
