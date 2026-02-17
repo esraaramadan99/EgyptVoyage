@@ -64,6 +64,7 @@ public class HotelsController : ControllerBase
             return StatusCode(500, new { message = "Error searching hotels", error = ex.Message });
         }
     }
+    /*
 
     [HttpPost]
     [Authorize(Roles = "Clerk")]
@@ -121,4 +122,6 @@ public class HotelsController : ControllerBase
             return StatusCode(500, new { message = "Error deleting hotel", error = ex.Message });
         }
     }
+}
+    */
 }

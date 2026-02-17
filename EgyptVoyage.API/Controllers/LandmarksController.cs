@@ -64,7 +64,9 @@ public class LandmarksController : ControllerBase
             return StatusCode(500, new { message = "Error searching landmarks", error = ex.Message });
         }
     }
+}
 
+    /*
     [HttpPost]
     [Authorize(Roles = "Clerk")]
     public async Task<ActionResult<LandmarkDto>> Create([FromBody] CreateLandmarkDto createDto)
@@ -122,3 +124,4 @@ public class LandmarksController : ControllerBase
         }
     }
 }
+    */

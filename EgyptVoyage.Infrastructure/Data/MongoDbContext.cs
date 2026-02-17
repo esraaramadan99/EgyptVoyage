@@ -44,9 +44,6 @@ public class MongoDbContext
     public IMongoCollection<Tourist> Tourists =>
         _database.GetCollection<Tourist>(_settings.TouristsCollectionName);
 
-    public IMongoCollection<Clerk> Clerks =>
-        _database.GetCollection<Clerk>(_settings.ClerksCollectionName);
-
     public IMongoCollection<Review> Reviews =>
         _database.GetCollection<Review>(_settings.ReviewsCollectionName);
 

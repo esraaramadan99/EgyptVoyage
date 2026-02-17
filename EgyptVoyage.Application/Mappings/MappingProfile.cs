@@ -64,7 +64,7 @@ public class MappingProfile : Profile
         // Entity -> DTO (Read)
         CreateMap<Restaurant, RestaurantDto>()
             .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom<RestaurantOpeningHourResolver>())
-            .ForMember(dest => dest.CloseHour, opt => opt.MapFrom<RestaurantCloseHourResolver>())
+            .ForMember(dest => dest.ClosingHour, opt => opt.MapFrom<RestaurantCloseHourResolver>())
             .ForMember(dest => dest.CuisineType, opt => opt.MapFrom(src => src.CuisineType.ToString()));
 
         // DTO -> Entity (Create)
@@ -93,7 +93,7 @@ public class MappingProfile : Profile
         // Entity -> DTO (Read)
         CreateMap<Landmark, LandmarkDto>()
             .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom<LandmarkOpeningHourResolver>())
-            .ForMember(dest => dest.CloseHour, opt => opt.MapFrom<LandmarkCloseHourResolver>());
+            .ForMember(dest => dest.ClosingHour, opt => opt.MapFrom<LandmarkCloseHourResolver>());
 
         // DTO -> Entity (Create)
         CreateMap<CreateLandmarkDto, Landmark>()
@@ -188,7 +188,7 @@ public class MappingProfile : Profile
     {
         public OperatingHours? Resolve(CreateRestaurantDto source, Restaurant destination, OperatingHours? destMember, ResolutionContext context)
         {
-            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+            return MapOperatingHours(source.OpeningHour, source.ClosingHour);
         }
     }
 
@@ -196,7 +196,7 @@ public class MappingProfile : Profile
     {
         public OperatingHours? Resolve(UpdateRestaurantDto source, Restaurant destination, OperatingHours? destMember, ResolutionContext context)
         {
-            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+            return MapOperatingHours(source.OpeningHour, source.ClosingHour);
         }
     }
 
@@ -235,7 +235,7 @@ public class MappingProfile : Profile
     {
         public OperatingHours? Resolve(CreateLandmarkDto source, Landmark destination, OperatingHours? destMember, ResolutionContext context)
         {
-            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+            return MapOperatingHours(source.OpeningHour, source.ClosingHour);
         }
     }
 
@@ -243,7 +243,7 @@ public class MappingProfile : Profile
     {
         public OperatingHours? Resolve(UpdateLandmarkDto source, Landmark destination, OperatingHours? destMember, ResolutionContext context)
         {
-            return MapOperatingHours(source.OpeningHour, source.CloseHour);
+            return MapOperatingHours(source.OpeningHour, source.ClosingHour);
         }
     }
 

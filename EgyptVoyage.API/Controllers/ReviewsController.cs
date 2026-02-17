@@ -1,11 +1,10 @@
-﻿
-/*
-using AutoMapper;
+﻿using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Review;
 using EgyptVoyage.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EgyptVoyage.API.Controllers;
 
@@ -22,133 +21,56 @@ public class ReviewsController : ControllerBase
         _mapper = mapper;
     }
 
+    // GET: api/reviews
     [HttpGet]
     public async Task<ActionResult<List<ReviewDto>>> GetAll()
     {
-        try
-        {
-            var reviews = await _reviewRepository.GetAllAsync();
-            return Ok(_mapper.Map<List<ReviewDto>>(reviews));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving reviews", error = ex.Message });
-        }
+        var reviews = await _reviewRepository.GetAllAsync();
+        return Ok(_mapper.Map<List<ReviewDto>>(reviews));
     }
 
+    // GET: api/reviews/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<ReviewDto>> GetById(string id)
     {
-        try
-        {
-            var review = await _reviewRepository.GetByIdAsync(id);
-            if (review == null)
-                return NotFound(new { message = "Review not found" });
+        var review = await _reviewRepository.GetByIdAsync(id);
 
-            return Ok(_mapper.Map<ReviewDto>(review));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving review", error = ex.Message });
-        }
+        if (review == null)
+            return NotFound();
+
+        return Ok(_mapper.Map<ReviewDto>(review));
     }
 
-    [HttpGet("entity/{entityId}")]
-    public async Task<ActionResult<List<ReviewDto>>> GetByEntity(string entityId)
-    {
-        try
-        {
-            var reviews = await _reviewRepository.GetByEntityAsync(entityId);
-            return Ok(_mapper.Map<List<ReviewDto>>(reviews));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving reviews", error = ex.Message });
-        }
-    }
-
-    [HttpGet("tourist/{touristId}")]
-    [Authorize]
-    public async Task<ActionResult<List<ReviewDto>>> GetByTourist(string touristId)
-    {
-        try
-        {
-            var reviews = await _reviewRepository.GetByTouristAsync(touristId);
-            return Ok(_mapper.Map<List<ReviewDto>>(reviews));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving reviews", error = ex.Message });
-        }
-    }
-*/
-    /*
+    // POST: api/reviews
     [HttpPost]
     [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult<ReviewDto>> Create([FromBody] CreateReviewDto createDto)
+    public async Task<ActionResult<ReviewDto>> Create(CreateReviewDto createDto)
     {
-        try
-        {
-            var review = _mapper.Map<Review>(createDto);
-            var createdReview = await _reviewRepository.AddAsync(review);
-            var reviewDto = _mapper.Map<ReviewDto>(createdReview);
+        var touristId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return CreatedAtAction(nameof(GetById), new { id = createdReview.Id }, reviewDto);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error creating review", error = ex.Message });
-        }
-    }
-    */
-    /*
-    [HttpPost]
-    [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult<ReviewDto>> Create([FromBody] CreateReviewDto createDto)
-    {
-        try
-        {
-            // Get TouristId from JWT token claims
-            var touristId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                         ?? User.FindFirst("sub")?.Value;
+        var review = _mapper.Map<Review>(createDto);
+        review.TouristId = touristId;
 
-            if (string.IsNullOrEmpty(touristId))
-            {
-                return Unauthorized(new { message = "Unable to identify user" });
-            }
+        var createdReview = await _reviewRepository.AddAsync(review);
 
-            var review = _mapper.Map<Review>(createDto);
-            review.TouristId = touristId;  // ✅ تعيين TouristId
-
-            var createdReview = await _reviewRepository.AddAsync(review);
-            var reviewDto = _mapper.Map<ReviewDto>(createdReview);
-
-            return CreatedAtAction(nameof(GetById), new { id = createdReview.Id }, reviewDto);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error creating review", error = ex.Message });
-        }
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = createdReview.Id },
+            _mapper.Map<ReviewDto>(createdReview)
+        );
     }
 
-
-
+    // DELETE: api/reviews/{id}
     [HttpDelete("{id}")]
     [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
-        try
-        {
-            var result = await _reviewRepository.DeleteAsync(id);
-            if (!result)
-                return NotFound(new { message = "Review not found" });
+        var deleted = await _reviewRepository.DeleteAsync(id);
 
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error deleting review", error = ex.Message });
-        }
+        if (!deleted)
+            return NotFound();
+
+        return NoContent();
     }
 }
-*/
+

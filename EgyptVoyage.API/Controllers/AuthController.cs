@@ -12,21 +12,25 @@ namespace EgyptVoyage.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ITouristRepository _touristRepository;
-    private readonly IClerkRepository _clerkRepository;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
     private readonly PasswordHasher _passwordHasher;
 
-    public AuthController(
+    /*public AuthController(
         ITouristRepository touristRepository,
-        IClerkRepository clerkRepository,
         JwtTokenGenerator jwtTokenGenerator,
-        PasswordHasher passwordHasher)
-    {
+        PasswordHasher passwordHasher) */
+
+       public AuthController(
+       ITouristRepository touristRepository,
+      JwtTokenGenerator jwtTokenGenerator,
+       PasswordHasher passwordHasher)
+
+       {
         _touristRepository = touristRepository;
-        _clerkRepository = clerkRepository;
-        _jwtTokenGenerator = jwtTokenGenerator;
+     _jwtTokenGenerator = jwtTokenGenerator;
         _passwordHasher = passwordHasher;
-    }
+   
+       }
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterDto request)
@@ -86,19 +90,7 @@ public class AuthController : ControllerBase
                 });
             }
 
-            var clerk = await _clerkRepository.GetByEmailAsync(request.Email);
-            if (clerk != null && _passwordHasher.VerifyPassword(request.Password, clerk.Password))
-            {
-                var token = _jwtTokenGenerator.GenerateTokenForClerk(clerk);
-                return Ok(new AuthResponseDto
-                {
-                    Token = token,
-                    Id = clerk.Id,
-                    Email = clerk.Email,
-                    Name = clerk.Name,
-                    Role = clerk.Role.ToString()
-                });
-            }
+           
 
             return Unauthorized(new { message = "Invalid email or password" });
         }
@@ -108,9 +100,8 @@ public class AuthController : ControllerBase
         }
     }
     /// <summary>
-    /// Register Clerk - للاختبار فقط
     /// </summary>
-    [HttpPost("register-clerk")]
+   /* [HttpPost("register-clerk")]
     public async Task<ActionResult<AuthResponseDto>> RegisterClerk([FromBody] RegisterDto request)
     {
         try
@@ -151,7 +142,7 @@ public class AuthController : ControllerBase
     }
 
 
-
+*/
 
 
 

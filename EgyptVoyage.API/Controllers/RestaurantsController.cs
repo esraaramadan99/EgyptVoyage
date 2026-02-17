@@ -1,5 +1,5 @@
 ﻿
-/*
+
 using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Restaurant;
@@ -66,7 +66,10 @@ public class RestaurantsController : ControllerBase
             return StatusCode(500, new { message = "Error searching restaurants", error = ex.Message });
         }
     }
+}
 
+
+    /*
     [HttpPost]
     [Authorize(Roles = "Clerk")]
     public async Task<ActionResult<RestaurantDto>> Create([FromBody] CreateRestaurantDto createDto)
@@ -124,4 +127,5 @@ public class RestaurantsController : ControllerBase
         }
     }
 }
-*/
+    
+    */

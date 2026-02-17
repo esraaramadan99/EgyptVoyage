@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Domain.Entities;
 
-/// <summary>
-/// Favorite list entity
-/// </summary>
+
 public class FavoriteList : BaseEntity
 {
     public string TouristId { get; set; } = string.Empty;

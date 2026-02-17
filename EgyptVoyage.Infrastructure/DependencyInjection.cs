@@ -40,7 +40,6 @@ public static class DependencyInjection
         services.AddScoped<IProgramRepository, ProgramRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<ITouristRepository, TouristRepository>();
-        services.AddScoped<IClerkRepository, ClerkRepository>();
         services.AddScoped<IFavoriteListRepository, FavoriteListRepository>();
 
         // Register Authentication Services

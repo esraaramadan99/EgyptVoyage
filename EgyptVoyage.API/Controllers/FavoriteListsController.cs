@@ -1,9 +1,9 @@
-﻿/*using AutoMapper;
+﻿using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Favorite;
-using EgyptVoyage.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EgyptVoyage.API.Controllers;
 
@@ -21,75 +21,45 @@ public class FavoriteListsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("tourist/{touristId}")]
-    public async Task<ActionResult<FavoriteDto>> GetByTourist(string touristId)
+    // GET: api/favoritelists/my
+    [HttpGet("my")]
+    public async Task<ActionResult<FavoriteDto>> GetMyFavorites()
     {
-        try
-        {
-            var favorite = await _favoriteListRepository.GetByTouristIdAsync(touristId);
-            if (favorite == null)
-                return NotFound(new { message = "Favorite list not found" });
+        var touristId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            return Ok(_mapper.Map<FavoriteDto>(favorite));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving favorites", error = ex.Message });
-        }
+        var favorite = await _favoriteListRepository.GetByTouristIdAsync(touristId);
+
+        if (favorite == null)
+            return NotFound();
+
+        return Ok(_mapper.Map<FavoriteDto>(favorite));
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<FavoriteDto>> GetById(string id)
-    {
-        try
-        {
-            var favorite = await _favoriteListRepository.GetByIdAsync(id);
-            if (favorite == null)
-                return NotFound(new { message = "Favorite not found" });
-
-            return Ok(_mapper.Map<FavoriteDto>(favorite));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error retrieving favorite", error = ex.Message });
-        }
-    }
-
+    // PUT: api/favoritelists/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult<FavoriteDto>> Update(string id, [FromBody] FavoriteDto updateDto)
+    public async Task<ActionResult<FavoriteDto>> Update(string id, FavoriteDto updateDto)
     {
-        try
-        {
-            var existingFavorite = await _favoriteListRepository.GetByIdAsync(id);
-            if (existingFavorite == null)
-                return NotFound(new { message = "Favorite list not found" });
+        var existingFavorite = await _favoriteListRepository.GetByIdAsync(id);
 
-            _mapper.Map(updateDto, existingFavorite);
-            var updatedFavorite = await _favoriteListRepository.UpdateAsync(existingFavorite);
+        if (existingFavorite == null)
+            return NotFound();
 
-            return Ok(_mapper.Map<FavoriteDto>(updatedFavorite));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error updating favorites", error = ex.Message });
-        }
+        _mapper.Map(updateDto, existingFavorite);
+
+        var updatedFavorite = await _favoriteListRepository.UpdateAsync(existingFavorite);
+
+        return Ok(_mapper.Map<FavoriteDto>(updatedFavorite));
     }
 
+    // DELETE: api/favoritelists/{id}
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
-        try
-        {
-            var result = await _favoriteListRepository.DeleteAsync(id);
-            if (!result)
-                return NotFound(new { message = "Favorite not found" });
+        var deleted = await _favoriteListRepository.DeleteAsync(id);
 
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = "Error deleting favorite", error = ex.Message });
-        }
+        if (!deleted)
+            return NotFound();
+
+        return NoContent();
     }
 }
-*/
