@@ -30,20 +30,12 @@ public class Landmark : BaseEntity
 public class Landmark : BaseEntity
 {
     public string LandmarkName { get; set; } = string.Empty;
-    public OperatingHours? OperatingHours { get; set; }
-    public List<string> Images { get; set; } = new();
     public string ImageCover { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public Location Location { get; set; } = null!;
-    public LandmarkType Type { get; set; }
-
-    /// <summary>
-    /// Entry ticket price (0 if free)
-    /// </summary>
+    public TimeSpan OpeningHour { get; set; }
+    public TimeSpan ClosingHour { get; set; }
+    public List<string> Images { get; set; } = new();
     public double Price { get; set; }
-
-    /// <summary>
-    /// Average visitor rating (0-5)
-    /// </summary>
     public double Rating { get; set; }
 }

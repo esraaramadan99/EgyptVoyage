@@ -15,19 +15,7 @@ namespace EgyptVoyage.Domain.Entities;
 /// Tourism program entity
 /// </summary>
 /// 
-/*
-public class Program : BaseEntity
-{
-    public string Name { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
-    public double Price { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public Location Location { get; set; } = null!;
 
-    public string Image { get; set; } = string.Empty;
-    public string Link { get; set; } = string.Empty;
-}
-*/
 public class Program : BaseEntity
 {
     public string Name { get; set; } = string.Empty;

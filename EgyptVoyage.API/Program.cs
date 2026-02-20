@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Bson.Serialization.Conventions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,18 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader();
     });
 });
+var conventionPack = new ConventionPack
+{
+    new CamelCaseElementNameConvention()
+};
+
+ConventionRegistry.Register(
+    "CamelCase",
+    conventionPack,
+    t => true
+);
+
+
 
 // Configure JWT Settings
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
