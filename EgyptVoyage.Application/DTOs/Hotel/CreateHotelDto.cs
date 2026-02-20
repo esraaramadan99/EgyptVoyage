@@ -10,7 +10,6 @@ namespace EgyptVoyage.Application.DTOs.Hotel;
 public class CreateHotelDto
 {
     public string HotelName { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
     public string WebsiteLink { get; set; } = string.Empty;
     public int Level { get; set; }
     public string Description { get; set; } = string.Empty;
