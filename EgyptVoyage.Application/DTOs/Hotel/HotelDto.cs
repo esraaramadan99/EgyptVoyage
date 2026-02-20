@@ -16,6 +16,8 @@ public class HotelDto
     public string Description { get; set; } = string.Empty;
     public LocationDto Location { get; set; } = null!;
     public List<string> Images { get; set; } = new();
+
+    public string ImageCover { get; set; } = string.Empty;
 }
 
 /*public class LocationDto

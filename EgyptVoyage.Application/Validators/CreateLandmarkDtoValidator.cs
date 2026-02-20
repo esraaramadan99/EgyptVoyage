@@ -24,5 +24,9 @@ public class CreateLandmarkDtoValidator : AbstractValidator<CreateLandmarkDto>
 
         RuleFor(x => x.Location)
             .NotNull().WithMessage("Location is required");
+
+        RuleFor(x => x.Price)
+           .GreaterThanOrEqualTo(0).WithMessage("Price cannot be negative");
     }
+
 }

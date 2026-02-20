@@ -14,6 +14,8 @@ namespace EgyptVoyage.Domain.Entities;
 /// <summary>
 /// Hotel entity
 /// </summary>
+/// 
+/*
 public class Hotel : BaseEntity
 {
     public string HotelName { get; set; } = string.Empty;
@@ -24,3 +26,16 @@ public class Hotel : BaseEntity
     public Location Location { get; set; } = null!;
     public List<string> Images { get; set; } = new();
 }
+*/
+public class Hotel : BaseEntity
+{
+    public string HotelName { get; set; } = string.Empty;
+    public string WebsiteLink { get; set; } = string.Empty;
+    public HotelLevel Level { get; set; }
+    public string Description { get; set; } = string.Empty;
+    public Location Location { get; set; } = null!;
+    public List<string> Images { get; set; } = new();
+    public string ImageCover { get; set; } = string.Empty;
+}
+
+

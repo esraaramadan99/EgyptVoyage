@@ -12,19 +12,19 @@ namespace EgyptVoyage.Domain.ValueObjects;
 /// </summary>
 public class OperatingHours
 {
-    public TimeSpan OpeningTime { get; set; }
-    public TimeSpan ClosingTime { get; set; }
+    public TimeSpan OpeningHour { get; set; }
+    public TimeSpan ClosingHour { get; set; }
 
     public OperatingHours() { }
 
-    public OperatingHours(TimeSpan openingTime, TimeSpan closingTime)
+    public OperatingHours(TimeSpan openingHour, TimeSpan closingHour)
     {
-        OpeningTime = openingTime;
-        ClosingTime = closingTime;
+        OpeningHour = openingHour;
+        ClosingHour = closingHour;
     }
 
     public bool IsOpen(TimeSpan currentTime)
     {
-        return currentTime >= OpeningTime && currentTime <= ClosingTime;
+        return currentTime >= OpeningHour && currentTime <= ClosingHour;
     }
 }
