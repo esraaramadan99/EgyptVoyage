@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿
+
+
+using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Favorite;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace EgyptVoyage.API.Controllers;
-
+/*
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "Tourist")]
@@ -60,6 +63,49 @@ public class FavoriteListsController : ControllerBase
         if (!deleted)
             return NotFound();
 
+        return NoContent();
+    }
+}
+*/
+[ApiController]
+[Route("api/favoritelists")]
+[Authorize(Roles = "Tourist")]
+public class FavoriteListsController : ControllerBase
+{
+    private readonly IFavoriteListRepository _repo;
+    private readonly IMapper _mapper;
+
+    public FavoriteListsController(IFavoriteListRepository repo, IMapper mapper)
+    {
+        _repo = repo;
+        _mapper = mapper;
+    }
+
+    private string GetTouristId() => User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    // GET: api/favoritelists/my
+    [HttpGet("my")]
+    public async Task<ActionResult<FavoriteDto>> GetMyFavorites()
+    {
+        var favorite = await _repo.GetByTouristIdAsync(GetTouristId());
+        if (favorite == null) return NotFound();
+        return Ok(_mapper.Map<FavoriteDto>(favorite));
+    }
+
+    // POST: api/favoritelists/my/items
+    [HttpPost("my/items")]
+    public async Task<ActionResult<FavoriteDto>> AddItem(AddToFavoriteDto dto)
+    {
+        var updated = await _repo.AddItemAsync(GetTouristId(), dto.EntityType, dto.EntityId);
+        return Ok(_mapper.Map<FavoriteDto>(updated));
+    }
+
+    // DELETE: api/favoritelists/my/items?entityType=Hotel&entityId=abc123
+    [HttpDelete("my/items")]
+    public async Task<IActionResult> RemoveItem([FromQuery] string entityType, [FromQuery] string entityId)
+    {
+        var removed = await _repo.RemoveItemAsync(GetTouristId(), entityType, entityId);
+        if (!removed) return NotFound();
         return NoContent();
     }
 }
