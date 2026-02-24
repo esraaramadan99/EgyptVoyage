@@ -10,10 +10,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Application.Common.Interfaces;
 
-/// <summary>
-/// Tourist repository interface
-/// Based on Use Cases: Sign Up, Login
-/// </summary>
+
 public interface ITouristRepository : IRepository<Tourist>
 {
     Task<Tourist?> GetByEmailAsync(string email);

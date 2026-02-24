@@ -4,9 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace EgyptVoyage.Domain.Entities.Common;
 
-/// <summary>
-/// Base entity for all domain entities
-/// </summary>
+
 public abstract class BaseEntity
 {
     [BsonId]

@@ -9,11 +9,13 @@ using EgyptVoyage.Domain.Entities;
 
 namespace EgyptVoyage.Application.Common.Interfaces;
 
-/// <summary>
-/// FavoriteList repository interface
-/// Based on Use Case: Add to Favorites, View Favorites
-/// </summary>
+
 public interface IFavoriteListRepository : IRepository<FavoriteList>
 {
     Task<FavoriteList?> GetByTouristIdAsync(string touristId);
+
+    //Task<string> GenerateShareTokenAsync(string touristId);
+  //  Task<bool> RevokeShareTokenAsync(string touristId);
+
+
 }

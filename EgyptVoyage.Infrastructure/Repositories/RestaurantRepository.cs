@@ -13,9 +13,8 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Restaurant repository implementation
-/// </summary>
+
+
 public class RestaurantRepository : Repository<Restaurant>, IRestaurantRepository
 {
     public RestaurantRepository(MongoDbContext context) : base(context.Restaurants)

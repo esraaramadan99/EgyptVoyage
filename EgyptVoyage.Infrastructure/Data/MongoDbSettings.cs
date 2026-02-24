@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Data;
 
-/// <summary>
 /// MongoDB configuration settings
-/// </summary>
+
 public class MongoDbSettings
 {
     public string ConnectionString { get; set; } = string.Empty;
     public string DatabaseName { get; set; } = string.Empty;
 
-    // Collection Names
     public string HotelsCollectionName { get; set; } = "Hotels";
     public string RestaurantsCollectionName { get; set; } = "Restaurants";
     public string LandmarksCollectionName { get; set; } = "Landmarks";

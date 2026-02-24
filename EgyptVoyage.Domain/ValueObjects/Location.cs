@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Domain.ValueObjects;
 
-/// <summary>
-/// Represents a geographical location
-/// </summary>
+
 public class Location
 {
     public string City { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+
     //public double? Latitude { get; set; }
     //public double? Longitude { get; set; }
 

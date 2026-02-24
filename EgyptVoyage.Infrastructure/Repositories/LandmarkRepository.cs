@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Landmark repository implementation
-/// </summary>
+
 public class LandmarkRepository : Repository<Landmark>, ILandmarkRepository
 {
     public LandmarkRepository(MongoDbContext context) : base(context.Landmarks)

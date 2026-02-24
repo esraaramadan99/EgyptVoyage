@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Program repository implementation
-/// </summary>
+
 public class ProgramRepository : Repository<Program>, IProgramRepository
 {
     public ProgramRepository(MongoDbContext context) : base(context.Programs)

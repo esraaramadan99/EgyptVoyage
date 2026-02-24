@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Hotel repository implementation
-/// </summary>
+
 public class HotelRepository : Repository<Hotel>, IHotelRepository
 {
     public HotelRepository(MongoDbContext context) : base(context.Hotels)

@@ -11,9 +11,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Review repository implementation
-/// </summary>
+
 public class ReviewRepository : Repository<Review>, IReviewRepository
 {
     public ReviewRepository(MongoDbContext context) : base(context.Reviews)

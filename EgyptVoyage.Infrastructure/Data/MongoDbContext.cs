@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Data;
 
-/// <summary>
-/// MongoDB database context
-/// </summary>
+
 public class MongoDbContext
 {
     private readonly IMongoDatabase _database;

@@ -11,18 +11,13 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Domain.Entities;
 
-/// <summary>
-/// Tourism program entity
-/// </summary>
-/// 
+
 
 public class Program : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Duration of the program in days
-    /// </summary>
+  
     public required string Duration { get; set; }
 
     public double Price { get; set; }

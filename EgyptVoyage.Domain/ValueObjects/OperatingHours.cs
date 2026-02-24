@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Domain.ValueObjects;
 
-/// <summary>
-/// Represents operating hours for restaurants and landmarks
-/// </summary>
+
 public class OperatingHours
 {
     public TimeSpan OpeningHour { get; set; }

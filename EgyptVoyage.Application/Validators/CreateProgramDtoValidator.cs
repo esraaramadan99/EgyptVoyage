@@ -13,36 +13,7 @@ namespace EgyptVoyage.Application.Validators;
 public class CreateProgramDtoValidator : AbstractValidator<CreateProgramDto>
 {
 
-    /*
-    public CreateProgramDtoValidator()
-    {
-        RuleFor(x => x.Name)
-             .NotEmpty().WithMessage("Program name is required")
-             .MaximumLength(200);
-
-        RuleFor(x => x.Duration.TotalHours)
-        .GreaterThan(0)
-         .WithMessage("Duration must be greater than 0 hours");
-
-
-        RuleFor(x => x.Price)
-            .GreaterThan(0).WithMessage("Price must be greater than 0");
-
-        RuleFor(x => x.Description)
-            .NotEmpty().WithMessage("Description is required");
-
-        RuleFor(x => x.Country)
-            .NotEmpty().WithMessage("Country is required")
-            .MaximumLength(100);
-
-
-
-
-    }
-
-
-    */
-
+   
 
     public CreateProgramDtoValidator()
     {

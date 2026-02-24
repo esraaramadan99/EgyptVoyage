@@ -13,9 +13,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// FavoriteList repository implementation
-/// </summary>
+
 public class FavoriteListRepository : Repository<FavoriteList>, IFavoriteListRepository
 {
     public FavoriteListRepository(MongoDbContext context) : base(context.FavoriteLists)

@@ -38,4 +38,6 @@ public class Landmark : BaseEntity
     public List<string> Images { get; set; } = new();
     public double Price { get; set; }
     public double Rating { get; set; }
+
+   // public List<string> Videos { get; set; } = new();
 }

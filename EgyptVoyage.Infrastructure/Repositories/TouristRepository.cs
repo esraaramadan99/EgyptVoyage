@@ -12,9 +12,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Repositories;
 
-/// <summary>
-/// Tourist repository implementation
-/// </summary>
+
 public class TouristRepository : Repository<Tourist>, ITouristRepository
 {
     public TouristRepository(MongoDbContext context) : base(context.Tourists)

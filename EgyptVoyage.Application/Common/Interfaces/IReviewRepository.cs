@@ -9,10 +9,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Application.Common.Interfaces;
 
-/// <summary>
-/// Review repository interface
-/// Based on Use Case: Make Review
-/// </summary>
+
 public interface IReviewRepository : IRepository<Review>
 {
     Task<List<Review>> GetByEntityAsync(string entityId);

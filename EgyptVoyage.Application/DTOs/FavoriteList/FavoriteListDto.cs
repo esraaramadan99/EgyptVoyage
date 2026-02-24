@@ -15,4 +15,8 @@ public class FavoriteDto
     public List<string> RestaurantIds { get; set; } = new();
     public List<string> LandmarkIds { get; set; } = new();
     public List<string> ProgramIds { get; set; } = new();
+
+   // public bool IsPublic { get; set; }
+   // public string? ShareUrl { get; set; } // بيتبنى في الـ Controller
+
 }

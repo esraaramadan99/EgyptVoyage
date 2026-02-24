@@ -9,15 +9,11 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Application.Common.Interfaces;
 
-/// <summary>
-/// Restaurant repository interface
-/// Based on Analysis: Issue Query Subsystem
-/// </summary>
+
 public interface IRestaurantRepository : IRepository<Restaurant>
 {
-    // من Analysis: searchRestaurantByName(name)
+   
     Task<List<Restaurant>> SearchByNameAsync(string name);
 
-    // getAllRestaurants() → موجود في IRepository.GetAllAsync()
-    // getAllRestaurantDetails() → نفس GetByIdAsync()
+    
 }
