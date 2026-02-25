@@ -136,10 +136,12 @@ public class MappingProfile : Profile
         // ============================================
         CreateMap<FavoriteList, FavoriteDto>();
 
-        CreateMap<FavoriteDto, FavoriteList>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
+        //CreateMap<FavoriteDto, FavoriteList>()
+        // ✅ حط ده
+        CreateMap<FavoriteList, FavoriteDetailDto>();
+            //.ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            //.ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            //.ForMember(dest => dest.IsDeleted, opt => opt.Ignore());
     }
 
     // ============================================

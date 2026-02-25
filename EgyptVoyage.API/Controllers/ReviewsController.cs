@@ -34,10 +34,8 @@ public class ReviewsController : ControllerBase
     public async Task<ActionResult<ReviewDto>> GetById(string id)
     {
         var review = await _reviewRepository.GetByIdAsync(id);
-
         if (review == null)
             return NotFound();
-
         return Ok(_mapper.Map<ReviewDto>(review));
     }
 
@@ -65,11 +63,14 @@ public class ReviewsController : ControllerBase
     [Authorize(Roles = "Tourist")]
     public async Task<IActionResult> Delete(string id)
     {
-        var deleted = await _reviewRepository.DeleteAsync(id);
+        var touristId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
 
-        if (!deleted)
-            return NotFound();
+        var review = await _reviewRepository.GetByIdAsync(id);
+        if (review == null) return NotFound();
 
+        if (review.TouristId != touristId) return Forbid();
+
+        await _reviewRepository.DeleteAsync(id);
         return NoContent();
     }
 }

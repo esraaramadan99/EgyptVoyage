@@ -1,4 +1,12 @@
-﻿using EgyptVoyage.Application.Common.Interfaces;
+﻿// المسار: EgyptVoyage.Infrastructure/Repositories/FavoriteListRepository.cs
+
+using AutoMapper;
+using EgyptVoyage.Application.Common.Interfaces;
+using EgyptVoyage.Application.DTOs.Favorite;
+using EgyptVoyage.Application.DTOs.Hotel;
+using EgyptVoyage.Application.DTOs.Landmark;
+using EgyptVoyage.Application.DTOs.Program;
+using EgyptVoyage.Application.DTOs.Restaurant;
 using EgyptVoyage.Domain.Entities;
 using EgyptVoyage.Infrastructure.Data;
 using MongoDB.Driver;
@@ -7,7 +15,15 @@ namespace EgyptVoyage.Infrastructure.Repositories;
 
 public class FavoriteListRepository : Repository<FavoriteList>, IFavoriteListRepository
 {
-    public FavoriteListRepository(MongoDbContext context) : base(context.FavoriteLists) { }
+    private readonly MongoDbContext _context;
+    private readonly IMapper _mapper;
+
+    public FavoriteListRepository(MongoDbContext context, IMapper mapper)
+        : base(context.FavoriteLists)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public async Task<FavoriteList?> GetByTouristIdAsync(string touristId)
     {
@@ -16,6 +32,62 @@ public class FavoriteListRepository : Repository<FavoriteList>, IFavoriteListRep
             Builders<FavoriteList>.Filter.Eq(x => x.IsDeleted, false)
         );
         return await _collection.Find(filter).FirstOrDefaultAsync();
+    }
+
+    public async Task<FavoriteDetailDto> GetByTouristIdWithDetailsAsync(string touristId)
+    {
+        var favorite = await GetByTouristIdAsync(touristId);
+
+        if (favorite == null)
+            return new FavoriteDetailDto { TouristId = touristId };
+
+        var result = new FavoriteDetailDto
+        {
+            Id = favorite.Id,
+            TouristId = favorite.TouristId
+        };
+
+        if (favorite.HotelIds.Any())
+        {
+            var hotels = await _context.Hotels
+                .Find(Builders<Hotel>.Filter.And(
+                    Builders<Hotel>.Filter.In(x => x.Id, favorite.HotelIds),
+                    Builders<Hotel>.Filter.Eq(x => x.IsDeleted, false)))
+                .ToListAsync();
+            result.Hotels = _mapper.Map<List<HotelDto>>(hotels);
+        }
+
+        if (favorite.RestaurantIds.Any())
+        {
+            var restaurants = await _context.Restaurants
+                .Find(Builders<Restaurant>.Filter.And(
+                    Builders<Restaurant>.Filter.In(x => x.Id, favorite.RestaurantIds),
+                    Builders<Restaurant>.Filter.Eq(x => x.IsDeleted, false)))
+                .ToListAsync();
+            result.Restaurants = _mapper.Map<List<RestaurantDto>>(restaurants);
+        }
+
+        if (favorite.LandmarkIds.Any())
+        {
+            var landmarks = await _context.Landmarks
+                .Find(Builders<Landmark>.Filter.And(
+                    Builders<Landmark>.Filter.In(x => x.Id, favorite.LandmarkIds),
+                    Builders<Landmark>.Filter.Eq(x => x.IsDeleted, false)))
+                .ToListAsync();
+            result.Landmarks = _mapper.Map<List<LandmarkDto>>(landmarks);
+        }
+
+        if (favorite.ProgramIds.Any())
+        {
+            var programs = await _context.Programs
+                .Find(Builders<Program>.Filter.And(
+                    Builders<Program>.Filter.In(x => x.Id, favorite.ProgramIds),
+                    Builders<Program>.Filter.Eq(x => x.IsDeleted, false)))
+                .ToListAsync();
+            result.Programs = _mapper.Map<List<ProgramDto>>(programs);
+        }
+
+        return result;
     }
 
     public async Task<FavoriteList> AddItemAsync(string touristId, string entityType, string entityId)

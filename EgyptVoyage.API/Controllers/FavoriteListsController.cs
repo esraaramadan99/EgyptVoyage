@@ -1,6 +1,58 @@
-﻿
+﻿// المسار: EgyptVoyage.API/Controllers/FavoriteListsController.cs
+/*
+using EgyptVoyage.Application.Common.Interfaces;
+using EgyptVoyage.Application.DTOs.Favorite;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace EgyptVoyage.API.Controllers;
+
+[ApiController]
+[Route("api/favoritelists")]
+[Authorize(Roles = "Tourist")]
+public class FavoriteListsController : ControllerBase
+{
+    private readonly IFavoriteListRepository _repo;
+
+    public FavoriteListsController(IFavoriteListRepository repo)
+    {
+        _repo = repo;
+    }
+
+    private string GetTouristId() => User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    // GET: api/favoritelists/my
+    [HttpGet("my")]
+    public async Task<ActionResult<FavoriteDto>> GetMyFavorites()
+    {
+        var favorite = await _repo.GetByTouristIdWithDetailsAsync(GetTouristId());
+        return Ok(favorite);
+    }
+
+    // POST: api/favoritelists/my/items
+    [HttpPost("my/items")]
+    public async Task<ActionResult<FavoriteDto>> AddItem(AddToFavoriteDto dto)
+    {
+        await _repo.AddItemAsync(GetTouristId(), dto.EntityType, dto.EntityId);
+        var updated = await _repo.GetByTouristIdWithDetailsAsync(GetTouristId());
+        return Ok(updated);
+    }
+
+    // DELETE: api/favoritelists/my/items?entityType=Hotel&entityId=abc123
+    [HttpDelete("my/items")]
+    public async Task<IActionResult> RemoveItem([FromQuery] string entityType, [FromQuery] string entityId)
+    {
+        var removed = await _repo.RemoveItemAsync(GetTouristId(), entityType, entityId);
+        if (!removed) return NotFound();
+        return NoContent();
+    }
+}
+*/
 
 
+
+/*
 using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Favorite;
@@ -9,6 +61,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace EgyptVoyage.API.Controllers;
+*/
 /*
 [ApiController]
 [Route("api/[controller]")]
@@ -67,6 +120,7 @@ public class FavoriteListsController : ControllerBase
     }
 }
 */
+/*
 [ApiController]
 [Route("api/favoritelists")]
 [Authorize(Roles = "Tourist")]
@@ -85,19 +139,70 @@ public class FavoriteListsController : ControllerBase
 
     // GET: api/favoritelists/my
     [HttpGet("my")]
-    public async Task<ActionResult<FavoriteDto>> GetMyFavorites()
+    public async Task<ActionResult<FavoriteDetailDto>> GetMyFavorites()
     {
         var favorite = await _repo.GetByTouristIdAsync(GetTouristId());
         if (favorite == null) return NotFound();
-        return Ok(_mapper.Map<FavoriteDto>(favorite));
+        return Ok(_mapper.Map<FavoriteDetailDto>(favorite));
     }
 
     // POST: api/favoritelists/my/items
     [HttpPost("my/items")]
-    public async Task<ActionResult<FavoriteDto>> AddItem(AddToFavoriteDto dto)
+    public async Task<ActionResult<FavoriteDetailDto>> AddItem(AddToFavoriteDto dto)
     {
         var updated = await _repo.AddItemAsync(GetTouristId(), dto.EntityType, dto.EntityId);
-        return Ok(_mapper.Map<FavoriteDto>(updated));
+        //return Ok(_mapper.Map<FavoriteDetailDto>(updated));
+        return Ok(updated);
+    }
+
+    // DELETE: api/favoritelists/my/items?entityType=Hotel&entityId=abc123
+    [HttpDelete("my/items")]
+    public async Task<IActionResult> RemoveItem([FromQuery] string entityType, [FromQuery] string entityId)
+    {
+        var removed = await _repo.RemoveItemAsync(GetTouristId(), entityType, entityId);
+        if (!removed) return NotFound();
+        return NoContent();
+    }
+}
+*/
+using AutoMapper;
+using EgyptVoyage.Application.Common.Interfaces;
+using EgyptVoyage.Application.DTOs.Favorite;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace EgyptVoyage.API.Controllers;
+
+[ApiController]
+[Route("api/favoritelists")]
+[Authorize(Roles = "Tourist")]
+public class FavoriteListsController : ControllerBase
+{
+    private readonly IFavoriteListRepository _repo;
+
+    public FavoriteListsController(IFavoriteListRepository repo)
+    {
+        _repo = repo;
+    }
+
+    private string GetTouristId() => User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+
+    // GET: api/favoritelists/my
+    [HttpGet("my")]
+    public async Task<ActionResult<FavoriteDetailDto>> GetMyFavorites()
+    {
+        var favorite = await _repo.GetByTouristIdWithDetailsAsync(GetTouristId());
+        return Ok(favorite);
+    }
+
+    // POST: api/favoritelists/my/items
+    [HttpPost("my/items")]
+    public async Task<ActionResult<FavoriteDetailDto>> AddItem(AddToFavoriteDto dto)
+    {
+        await _repo.AddItemAsync(GetTouristId(), dto.EntityType, dto.EntityId);
+        var updated = await _repo.GetByTouristIdWithDetailsAsync(GetTouristId());
+        return Ok(updated);
     }
 
     // DELETE: api/favoritelists/my/items?entityType=Hotel&entityId=abc123
