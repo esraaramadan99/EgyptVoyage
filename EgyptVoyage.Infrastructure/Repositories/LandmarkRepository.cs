@@ -19,12 +19,5 @@ public class LandmarkRepository : Repository<Landmark>, ILandmarkRepository
     {
     }
 
-    public async Task<List<Landmark>> SearchByNameAsync(string name)
-    {
-        var filter = Builders<Landmark>.Filter.And(
-            Builders<Landmark>.Filter.Regex(x => x.LandmarkName, new MongoDB.Bson.BsonRegularExpression(name, "i")),
-            Builders<Landmark>.Filter.Eq(x => x.IsDeleted, false)
-        );
-        return await _collection.Find(filter).ToListAsync();
-    }
+    
 }

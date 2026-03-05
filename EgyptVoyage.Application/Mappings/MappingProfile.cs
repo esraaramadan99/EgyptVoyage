@@ -134,7 +134,6 @@ public class MappingProfile : Profile
         // ============================================
         // FavoriteList
         // ============================================
-        CreateMap<FavoriteList, FavoriteDto>();
 
         //CreateMap<FavoriteDto, FavoriteList>()
         // ✅ حط ده

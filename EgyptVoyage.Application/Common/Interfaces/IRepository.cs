@@ -8,9 +8,7 @@ using EgyptVoyage.Domain.Entities.Common;
 
 namespace EgyptVoyage.Application.Common.Interfaces;
 
-/// <summary>
-/// Generic repository interface for CRUD operations
-/// </summary>
+
 public interface IRepository<T> where T : BaseEntity
 {
     Task<T?> GetByIdAsync(string id);

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Review;
 using EgyptVoyage.Domain.Entities;
@@ -13,11 +14,16 @@ namespace EgyptVoyage.API.Controllers;
 public class ReviewsController : ControllerBase
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly ITouristRepository _touristRepository;
     private readonly IMapper _mapper;
 
-    public ReviewsController(IReviewRepository reviewRepository, IMapper mapper)
+    public ReviewsController(
+        IReviewRepository reviewRepository,
+        ITouristRepository touristRepository,
+        IMapper mapper)
     {
         _reviewRepository = reviewRepository;
+        _touristRepository = touristRepository;
         _mapper = mapper;
     }
 
@@ -26,18 +32,20 @@ public class ReviewsController : ControllerBase
     public async Task<ActionResult<List<ReviewDto>>> GetAll()
     {
         var reviews = await _reviewRepository.GetAllAsync();
-        return Ok(_mapper.Map<List<ReviewDto>>(reviews));
+        var reviewDtos = new List<ReviewDto>();
+
+        foreach (var review in reviews)
+        {
+            var dto = _mapper.Map<ReviewDto>(review);
+            var tourist = await _touristRepository.GetByIdAsync(review.TouristId);
+            dto.TouristName = tourist?.Name ?? "Unknown";
+            reviewDtos.Add(dto);
+        }
+
+        return Ok(reviewDtos);
     }
 
-    // GET: api/reviews/{id}
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ReviewDto>> GetById(string id)
-    {
-        var review = await _reviewRepository.GetByIdAsync(id);
-        if (review == null)
-            return NotFound();
-        return Ok(_mapper.Map<ReviewDto>(review));
-    }
+  
 
     // POST: api/reviews
     [HttpPost]
@@ -51,11 +59,11 @@ public class ReviewsController : ControllerBase
 
         var createdReview = await _reviewRepository.AddAsync(review);
 
-        return CreatedAtAction(
-            nameof(GetById),
-            new { id = createdReview.Id },
-            _mapper.Map<ReviewDto>(createdReview)
-        );
+        var dto = _mapper.Map<ReviewDto>(createdReview);
+        var tourist = await _touristRepository.GetByIdAsync(touristId);
+        dto.TouristName = tourist?.Name ?? "Unknown";
+
+        return Ok(_mapper.Map<ReviewDto>(createdReview));
     }
 
     // DELETE: api/reviews/{id}
@@ -64,10 +72,9 @@ public class ReviewsController : ControllerBase
     public async Task<IActionResult> Delete(string id)
     {
         var touristId = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
-
         var review = await _reviewRepository.GetByIdAsync(id);
-        if (review == null) return NotFound();
 
+        if (review == null) return NotFound();
         if (review.TouristId != touristId) return Forbid();
 
         await _reviewRepository.DeleteAsync(id);

@@ -20,12 +20,5 @@ public class HotelRepository : Repository<Hotel>, IHotelRepository
     {
     }
 
-    public async Task<List<Hotel>> SearchByNameAsync(string name)
-    {
-        var filter = Builders<Hotel>.Filter.And(
-            Builders<Hotel>.Filter.Regex(x => x.HotelName, new MongoDB.Bson.BsonRegularExpression(name, "i")),
-            Builders<Hotel>.Filter.Eq(x => x.IsDeleted, false)
-        );
-        return await _collection.Find(filter).ToListAsync();
-    }
+ 
 }

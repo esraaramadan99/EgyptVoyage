@@ -21,12 +21,5 @@ public class RestaurantRepository : Repository<Restaurant>, IRestaurantRepositor
     {
     }
 
-    public async Task<List<Restaurant>> SearchByNameAsync(string name)
-    {
-        var filter = Builders<Restaurant>.Filter.And(
-            Builders<Restaurant>.Filter.Regex(x => x.RestaurantName, new MongoDB.Bson.BsonRegularExpression(name, "i")),
-            Builders<Restaurant>.Filter.Eq(x => x.IsDeleted, false)
-        );
-        return await _collection.Find(filter).ToListAsync();
-    }
+    
 }

@@ -13,7 +13,6 @@ namespace EgyptVoyage.Application.Common.Interfaces;
 public interface IRestaurantRepository : IRepository<Restaurant>
 {
    
-    Task<List<Restaurant>> SearchByNameAsync(string name);
 
     
 }

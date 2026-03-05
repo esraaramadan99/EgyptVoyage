@@ -12,21 +12,6 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Domain.Entities;
 
-/// <summary>
-/// Landmark entity
-/// </summary>
-/// 
-/*
-public class Landmark : BaseEntity
-{
-    public string LandmarkName { get; set; } = string.Empty;
-    public OperatingHours? OperatingHours { get; set; }
-    public List<string> Images { get; set; } = new();
-    public string Description { get; set; } = string.Empty;
-    public Location Location { get; set; } = null!;
-    public LandmarkType Type { get; set; }
-}
-*/
 public class Landmark : BaseEntity
 {
     public string LandmarkName { get; set; } = string.Empty;

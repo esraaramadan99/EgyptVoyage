@@ -13,6 +13,5 @@ namespace EgyptVoyage.Application.Common.Interfaces;
 public interface ILandmarkRepository : IRepository<Landmark>
 {
    
-    Task<List<Landmark>> SearchByNameAsync(string name);
 
 }

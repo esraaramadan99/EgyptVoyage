@@ -11,6 +11,8 @@ public class ReviewDto
 {
     public string Id { get; set; } = string.Empty;
     public string TouristId { get; set; } = string.Empty;
+
+    public string TouristName { get; set; } = string.Empty;
     public string EntityId { get; set; } = string.Empty;
     public string EntityType { get; set; } = string.Empty;
     public int Rating { get; set; }

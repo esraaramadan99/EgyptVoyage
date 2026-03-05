@@ -13,16 +13,13 @@ public class Location
     public string City { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
 
-    //public double? Latitude { get; set; }
-    //public double? Longitude { get; set; }
-
+    //lma mongodb tgeb el data mn eldb then convert it to c# object --Deserialization
     public Location() { }
 
-    public Location(string city, string address) //double? latitude = null, double? longitude = null)
+    public Location(string city, string address) 
     {
         City = city;
         Address = address;
-       // Latitude = latitude;
-        //Longitude = longitude;
+     
     }
 }
