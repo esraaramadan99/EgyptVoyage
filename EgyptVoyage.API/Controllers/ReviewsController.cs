@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using EgyptVoyage.Application.Common.Interfaces;
 using EgyptVoyage.Application.DTOs.Review;
 using EgyptVoyage.Domain.Entities;
@@ -45,12 +44,10 @@ public class ReviewsController : ControllerBase
         return Ok(reviewDtos);
     }
 
-  
-
     // POST: api/reviews
     [HttpPost]
     [Authorize(Roles = "Tourist")]
-    public async Task<ActionResult<ReviewDto>> Create(CreateReviewDto createDto)
+    public async Task<ActionResult<ReviewDto>> Create([FromBody] CreateReviewDto createDto)
     {
         var touristId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -63,7 +60,7 @@ public class ReviewsController : ControllerBase
         var tourist = await _touristRepository.GetByIdAsync(touristId);
         dto.TouristName = tourist?.Name ?? "Unknown";
 
-        return Ok(_mapper.Map<ReviewDto>(createdReview));
+        return Ok(dto);
     }
 
     // DELETE: api/reviews/{id}
@@ -81,4 +78,3 @@ public class ReviewsController : ControllerBase
         return NoContent();
     }
 }
-

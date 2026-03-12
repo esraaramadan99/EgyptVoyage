@@ -1,21 +1,12 @@
 ﻿using EgyptVoyage.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-
-
 
 namespace EgyptVoyage.Infrastructure.Authentication;
 
-/// <summary>
-/// JWT token generator service
-/// </summary>
 public class JwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings;
@@ -25,9 +16,7 @@ public class JwtTokenGenerator
         _jwtSettings = jwtSettings.Value;
     }
 
-    /// <summary>
-    /// Generate JWT token for tourist
-    /// </summary>
+    // بيعمل Token للـ Tourist
     public string GenerateTokenForTourist(Tourist tourist)
     {
         var claims = new[]
@@ -38,26 +27,37 @@ public class JwtTokenGenerator
             new Claim(ClaimTypes.Role, "Tourist"),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
-
         return GenerateToken(claims);
     }
 
- 
-        private string GenerateToken(Claim[] claims)
+    // بيعمل Token للـ Clerk
+    // Role = "Clerk" عشان يقدر يوصل لـ CRUD Endpoints
+    public string GenerateTokenForClerk(Clerk clerk)
+    {
+        var claims = new[]
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer,
-                audience: _jwtSettings.Audience,
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+            new Claim(JwtRegisteredClaimNames.Sub, clerk.Id),
+            new Claim(JwtRegisteredClaimNames.Email, clerk.Email),
+            new Claim(JwtRegisteredClaimNames.Name, clerk.Name),
+            new Claim(ClaimTypes.Role, "Clerk"),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        return GenerateToken(claims);
     }
-    
 
+    private string GenerateToken(Claim[] claims)
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: _jwtSettings.Issuer,
+            audience: _jwtSettings.Audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+}

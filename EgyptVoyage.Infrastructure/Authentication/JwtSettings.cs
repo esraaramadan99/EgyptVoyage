@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace EgyptVoyage.Infrastructure.Authentication;
 
-/// <summary>
-/// JWT configuration settings
-/// </summary>
+
 public class JwtSettings
 {
     public string Secret { get; set; } = string.Empty;

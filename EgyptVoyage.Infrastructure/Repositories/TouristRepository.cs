@@ -37,4 +37,12 @@ public class TouristRepository : Repository<Tourist>, ITouristRepository
         var count = await _collection.CountDocumentsAsync(filter);
         return count > 0;
     }
+    public async Task<Tourist?> GetByResetTokenAsync(string token)
+    {
+        var filter = Builders<Tourist>.Filter.And(
+            Builders<Tourist>.Filter.Eq(x => x.PasswordResetToken, token),
+            Builders<Tourist>.Filter.Eq(x => x.IsDeleted, false)
+        );
+        return await _collection.Find(filter).FirstOrDefaultAsync();
+    }
 }

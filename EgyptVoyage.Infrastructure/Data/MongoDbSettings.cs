@@ -19,7 +19,9 @@ public class MongoDbSettings
     public string LandmarksCollectionName { get; set; } = "Landmarks";
     public string ProgramsCollectionName { get; set; } = "Programs";
     public string TouristsCollectionName { get; set; } = "Tourists";
-    public string ClerksCollectionName { get; set; } = "Clerks";
     public string ReviewsCollectionName { get; set; } = "Reviews";
     public string FavoriteListsCollectionName { get; set; } = "FavoriteLists";
+    public string ClerksCollectionName { get; set; } = "Clerks";
+
+
 }

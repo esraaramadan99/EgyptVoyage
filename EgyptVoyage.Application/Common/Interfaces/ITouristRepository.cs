@@ -16,4 +16,7 @@ public interface ITouristRepository : IRepository<Tourist>
     Task<Tourist?> GetByEmailAsync(string email);
 
     Task<bool> EmailExistsAsync(string email);
+
+    Task<Tourist?> GetByResetTokenAsync(string token);
+
 }

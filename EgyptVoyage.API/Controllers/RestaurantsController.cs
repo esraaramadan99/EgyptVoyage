@@ -53,8 +53,61 @@ public class RestaurantsController : ControllerBase
         }
     }
 
-   
+    [HttpPost]
+    [Authorize(Roles = "Clerk")]
+    public async Task<ActionResult<RestaurantDto>> Create([FromBody] CreateRestaurantDto createDto)
+    {
+        try
+        {
+            var restaurant = _mapper.Map<Restaurant>(createDto);
+            var created = await _restaurantRepository.AddAsync(restaurant);
+            return Ok(_mapper.Map<RestaurantDto>(created));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error creating restaurant", error = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "Clerk")]
+    public async Task<ActionResult<RestaurantDto>> Update(string id, [FromBody] UpdateRestaurantDto updateDto)
+    {
+        try
+        {
+            var existing = await _restaurantRepository.GetByIdAsync(id);
+            if (existing == null) return NotFound(new { message = "Restaurant not found" });
+            updateDto.Id = id;
+            var restaurant = _mapper.Map<Restaurant>(updateDto);
+            var updated = await _restaurantRepository.UpdateAsync(restaurant);
+            return Ok(_mapper.Map<RestaurantDto>(updated));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error updating restaurant", error = ex.Message });
+        }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Roles = "Clerk")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        try
+        {
+            var existing = await _restaurantRepository.GetByIdAsync(id);
+            if (existing == null) return NotFound(new { message = "Restaurant not found" });
+            await _restaurantRepository.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error deleting restaurant", error = ex.Message });
+        }
+    }
+
+
 }
+
 
 
     

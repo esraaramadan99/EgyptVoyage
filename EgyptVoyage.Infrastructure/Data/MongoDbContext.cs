@@ -22,11 +22,18 @@ public class MongoDbContext
     {
         _settings = settings.Value;
 
-        var client = new MongoClient(_settings.ConnectionString);
+        // بيعمل اتصال بـ MongoDB Atlas على الإنترنت
+
+       var client = new MongoClient(_settings.ConnectionString);
+
+        // بيفتح الـ Database "EgyptVoyageDb"
+
         _database = client.GetDatabase(_settings.DatabaseName);
     }
 
     // Collections
+
+    //byfta7 el collection
     public IMongoCollection<Hotel> Hotels =>
         _database.GetCollection<Hotel>(_settings.HotelsCollectionName);
 
@@ -47,4 +54,10 @@ public class MongoDbContext
 
     public IMongoCollection<FavoriteList> FavoriteLists =>
         _database.GetCollection<FavoriteList>(_settings.FavoriteListsCollectionName);
+
+    public IMongoCollection<Clerk> Clerks =>
+         _database.GetCollection<Clerk>(_settings.ClerksCollectionName);
+
+
+
 }

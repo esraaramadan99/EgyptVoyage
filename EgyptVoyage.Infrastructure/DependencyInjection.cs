@@ -5,13 +5,6 @@ using EgyptVoyage.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
 
 namespace EgyptVoyage.Infrastructure;
 
@@ -21,7 +14,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // MongoDB Configuration
         services.Configure<MongoDbSettings>(
             configuration.GetSection("MongoDbSettings"));
 
@@ -33,7 +25,7 @@ public static class DependencyInjection
 
         services.AddScoped<MongoDbContext>();
 
-        // Register Repositories
+        // Repositories الموجودة
         services.AddScoped<IHotelRepository, HotelRepository>();
         services.AddScoped<ILandmarkRepository, LandmarkRepository>();
         services.AddScoped<IRestaurantRepository, RestaurantRepository>();
@@ -42,7 +34,9 @@ public static class DependencyInjection
         services.AddScoped<ITouristRepository, TouristRepository>();
         services.AddScoped<IFavoriteListRepository, FavoriteListRepository>();
 
-        // Register Authentication Services
+        // Repository الجديد للـ Clerk
+        services.AddScoped<IClerkRepository, ClerkRepository>();
+
         services.AddSingleton<JwtTokenGenerator>();
         services.AddSingleton<PasswordHasher>();
 

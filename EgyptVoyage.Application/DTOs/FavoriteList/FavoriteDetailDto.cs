@@ -1,18 +1,5 @@
 ﻿
-/* 
- using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EgyptVoyage.Application.DTOs.FavoriteList
-{
-    internal class FavoriteDetailDto
-    {
-    }
-}
-*/
 using EgyptVoyage.Application.DTOs.Hotel;
 using EgyptVoyage.Application.DTOs.Landmark;
 using EgyptVoyage.Application.DTOs.Program;
