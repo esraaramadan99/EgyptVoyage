@@ -122,6 +122,10 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddHttpClient("FlaskAI", client =>
+{
+    client.BaseAddress = new Uri("https://unpolishable-arboresque-geri.ngrok-free.dev");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline

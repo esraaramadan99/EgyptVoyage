@@ -32,15 +32,8 @@ public class ClerkController : ControllerBase
         {
             var clerk = await _clerkRepository.GetByEmailAsync(request.Email);
 
-            // مؤقت للـ Debug - احذفيه بعدين
-            if (clerk == null)
-                return BadRequest(new { message = "Clerk not found in DB", email = request.Email });
-
-            var isPasswordValid = _passwordHasher.VerifyPassword(request.Password, clerk.Password);
-
-            // مؤقت للـ Debug - احذفيه بعدين
-            if (!isPasswordValid)
-                return BadRequest(new { message = "Password wrong", enteredPassword = request.Password, storedHash = clerk.Password });
+            if (clerk == null || !_passwordHasher.VerifyPassword(request.Password, clerk.Password))
+                return Unauthorized(new { message = "Invalid email or password" });
 
             var token = _jwtTokenGenerator.GenerateTokenForClerk(clerk);
             return Ok(new
@@ -57,5 +50,5 @@ public class ClerkController : ControllerBase
             return StatusCode(500, new { message = "An error occurred", error = ex.Message });
         }
     }
-   
+
 }
