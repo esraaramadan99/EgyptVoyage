@@ -57,21 +57,5 @@ public class ClerkController : ControllerBase
             return StatusCode(500, new { message = "An error occurred", error = ex.Message });
         }
     }
-    [HttpGet("debug")]
-    public async Task<IActionResult> Debug()
-    {
-        try
-        {
-            var all = await _clerkRepository.GetAllAsync();
-            return Ok(new
-            {
-                count = all.Count,
-                clerks = all.Select(x => new { x.Id, x.Email, x.Name })
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { error = ex.Message });
-        }
-    }
+   
 }
