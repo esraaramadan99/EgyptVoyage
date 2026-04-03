@@ -15,6 +15,7 @@ namespace EgyptVoyage.Infrastructure.Repositories;
 /// </summary>
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
+   // ده الـ connection بالـ MongoDB collection
     protected readonly IMongoCollection<T> _collection;
 
     public Repository(IMongoCollection<T> collection)
@@ -30,13 +31,13 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         );
         return await _collection.Find(filter).FirstOrDefaultAsync();
     }
-
+    // get all ma3ada el ma3mlhom delete
     public async Task<List<T>> GetAllAsync()
     {
         var filter = Builders<T>.Filter.Eq(x => x.IsDeleted, false);
         return await _collection.Find(filter).ToListAsync();
     }
-
+    // بيضيف record جديد
     public async Task<T> AddAsync(T entity)
     {
         entity.CreatedAt = DateTime.UtcNow;
@@ -44,7 +45,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         await _collection.InsertOneAsync(entity);
         return entity;
     }
-
+    //
     public async Task<T> UpdateAsync(T entity)
     {
         entity.UpdatedAt = DateTime.UtcNow;

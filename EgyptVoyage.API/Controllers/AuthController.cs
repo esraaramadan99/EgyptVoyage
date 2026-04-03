@@ -12,23 +12,24 @@ namespace EgyptVoyage.API.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly ITouristRepository _touristRepository;
-    private readonly JwtTokenGenerator _jwtTokenGenerator;
-    private readonly PasswordHasher _passwordHasher;
+    // بنعمل متغيرات خاصة بالـ Controller عشان نستخدمهم في كل الـ Methods
+    private readonly ITouristRepository _touristRepository; // بيتعامل مع قاعدة البيانات
+    private readonly JwtTokenGenerator _jwtTokenGenerator;  // بيعمل JWT Token
+    private readonly PasswordHasher _passwordHasher;        // بيعمل Hash للباسورد
 
- 
-
-       public AuthController(
-       ITouristRepository touristRepository,
-      JwtTokenGenerator jwtTokenGenerator,
-       PasswordHasher passwordHasher)
-
-       {
+    // الـ Constructor — بيتنفذ أول ما الـ Controller يتعمل
+    // الـ .NET بيجيب الـ Dependencies دي تلقائياً (Dependency Injection)
+    public AuthController(
+        ITouristRepository touristRepository,
+        JwtTokenGenerator jwtTokenGenerator,
+        PasswordHasher passwordHasher)
+    {
+        // بنحفظ اللي جالنا في المتغيرات اللي فوق
         _touristRepository = touristRepository;
-     _jwtTokenGenerator = jwtTokenGenerator;
+        _jwtTokenGenerator = jwtTokenGenerator;
         _passwordHasher = passwordHasher;
-   
-       }
+
+    }
 
     [HttpPost("register")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromBody] RegisterDto request)
@@ -202,7 +203,7 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = "An error occurred", error = ex.Message });
         }
     }
-    // مؤقت عشان نعمل Hash للباسورد - احذفيه بعد ما تاخدي الـ Hash
+    // مؤقت عشان نعمل Hash للباسورد -  ما اخد الـ Hash
     [HttpGet("hash")]
     public IActionResult HashPassword([FromQuery] string password)
     {

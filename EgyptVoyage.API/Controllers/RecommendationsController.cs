@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*
+
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -56,3 +59,4 @@ public class PredictRequestDto
     public string EntityId { get; set; } = string.Empty;
     public string InteractionType { get; set; } = "view";
 }
+*/

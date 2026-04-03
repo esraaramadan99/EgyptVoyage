@@ -64,7 +64,7 @@ public class FavoriteListsController : ControllerBase
         });
     }
 
-    // ✅ Feature 1: Get Shared List - أي حد يقدر يشوفها من غير Login
+    //  Feature 1: Get Shared List - أي حد يقدر يشوفها من غير Login
     // GET: api/favoritelists/shared/{shareToken}
     [HttpGet("shared/{shareToken}")]
     [AllowAnonymous]

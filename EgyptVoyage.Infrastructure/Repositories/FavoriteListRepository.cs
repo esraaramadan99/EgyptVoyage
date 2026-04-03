@@ -13,6 +13,9 @@ namespace EgyptVoyage.Infrastructure.Repositories;
 
 public class FavoriteListRepository : Repository<FavoriteList>, IFavoriteListRepository
 {
+    // بنعلن عن متغيرين private readonly
+    // private = متاح في الـ class دي بس
+    // readonly = بيتحدد مرة واحدة في الـ constructor ومش بيتغير
     private readonly MongoDbContext _context;
     private readonly IMapper _mapper;
 

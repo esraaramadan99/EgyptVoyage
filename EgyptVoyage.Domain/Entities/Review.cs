@@ -3,9 +3,7 @@ using EgyptVoyage.Domain.Enums;
 
 namespace EgyptVoyage.Domain.Entities;
 
-/// <summary>
-/// Review entity
-/// </summary>
+
 public class Review : BaseEntity
 {
     public string TouristId { get; set; } = string.Empty;
