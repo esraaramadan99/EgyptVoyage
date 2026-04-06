@@ -203,6 +203,12 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = "An error occurred", error = ex.Message });
         }
     }
+
+
+
+
+
+
     // مؤقت عشان نعمل Hash للباسورد -  ما اخد الـ Hash
     [HttpGet("hash")]
     public IActionResult HashPassword([FromQuery] string password)

@@ -18,3 +18,4 @@ public interface IRepository<T> where T : BaseEntity
    Task<T> UpdateAsync(T entity);
     Task<bool> DeleteAsync(string id);
 }
+

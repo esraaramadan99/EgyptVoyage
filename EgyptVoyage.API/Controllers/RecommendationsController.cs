@@ -1,4 +1,4 @@
-﻿/*
+﻿
 
 
 using Microsoft.AspNetCore.Authorization;
@@ -59,4 +59,3 @@ public class PredictRequestDto
     public string EntityId { get; set; } = string.Empty;
     public string InteractionType { get; set; } = "view";
 }
-*/

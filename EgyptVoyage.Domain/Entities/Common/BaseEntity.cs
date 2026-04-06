@@ -14,7 +14,7 @@ public abstract class BaseEntity
 
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
-    // time for creating a document 
+    // time for* creating a document 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     //   ؟ ممكن تبقي null عادي
     public DateTime? UpdatedAt { get; set; }

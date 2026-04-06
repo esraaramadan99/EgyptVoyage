@@ -80,26 +80,20 @@ public class MappingProfile : Profile
         // ============================================
         // Landmark
         // ============================================
-        CreateMap<Landmark, LandmarkDto>()
-            .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom(src => src.OpeningHour.ToString(@"hh\:mm")))
-            .ForMember(dest => dest.ClosingHour, opt => opt.MapFrom(src => src.ClosingHour.ToString(@"hh\:mm")));
+        CreateMap<Landmark, LandmarkDto>();
 
         CreateMap<CreateLandmarkDto, Landmark>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Rating, opt => opt.Ignore())
-            .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom(src => TimeSpan.Parse(src.OpeningHour)))
-            .ForMember(dest => dest.ClosingHour, opt => opt.MapFrom(src => TimeSpan.Parse(src.ClosingHour)));
+            .ForMember(dest => dest.Rating, opt => opt.Ignore());
 
         CreateMap<UpdateLandmarkDto, Landmark>()
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
             .ForMember(dest => dest.IsDeleted, opt => opt.Ignore())
-            .ForMember(dest => dest.Rating, opt => opt.Ignore())
-            .ForMember(dest => dest.OpeningHour, opt => opt.MapFrom(src => TimeSpan.Parse(src.OpeningHour)))
-            .ForMember(dest => dest.ClosingHour, opt => opt.MapFrom(src => TimeSpan.Parse(src.ClosingHour)));
+            .ForMember(dest => dest.Rating, opt => opt.Ignore());
 
         // ============================================
         // Program

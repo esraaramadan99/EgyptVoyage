@@ -18,8 +18,8 @@ public class Landmark : BaseEntity
     public string ImageCover { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public Location Location { get; set; } = null!;
-    public TimeSpan OpeningHour { get; set; }
-    public TimeSpan ClosingHour { get; set; }
+    public string OpeningHour { get; set; } = string.Empty;
+    public string ClosingHour { get; set; } = string.Empty;
     public List<string> Images { get; set; } = new();
     public double Price { get; set; }
     public double Rating { get; set; }
