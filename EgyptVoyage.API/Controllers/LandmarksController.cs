@@ -22,7 +22,7 @@ public class LandmarksController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public async Task<ActionResult<List<LandmarkDto>>> GetAll()
     {
         try
@@ -35,7 +35,20 @@ public class LandmarksController : ControllerBase
             return StatusCode(500, new { message = "Error retrieving landmarks", error = ex.Message });
         }
     }
-
+    */
+    [HttpGet]
+    public async Task<ActionResult<List<LandmarkDto>>> GetAll()
+    {
+        try
+        {
+            var landmarks = await _landmarkRepository.GetAllAsync();
+            return Ok(landmarks); // بدون mapper خالص
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "Error retrieving landmarks", error = ex.Message });
+        }
+    }
     [HttpGet("{id}")]
     public async Task<ActionResult<LandmarkDto>> GetById(string id)
     {
